@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 4: Weekly Practice | Healing with Yvonne</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- React and ReactDOM -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <!-- Babel for processing JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #fcfdfc; 
+            color: #1f2937;
+        }
+        @media print {
+            .no-print { display: none !important; }
+            body { background: white !important; padding: 0 !important; }
+            .print-block { 
+                display: block !important; 
+                margin-top: 1rem; 
+                border: 1px solid #e5e7eb !important; 
+                border-radius: 1rem !important; 
+                padding: 2.5rem !important; 
+                box-shadow: none !important;
+            }
+            .container-box { 
+                box-shadow: none !important; 
+                border: none !important; 
+                width: 100% !important; 
+                max-width: 100% !important; 
+                padding: 0 !important;
+            }
+        }
+        .fade-in { animation: fadeIn 0.4s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState } = React;
+
+        const App = () => {
+            const [view, setView] = useState('menu'); // 'menu', 'practice', 'reflection', 'permissions', 'result'
+            const [selectedWeek, setSelectedWeek] = useState(null);
+            const [reflectionText, setReflectionText] = useState('');
+            
+            const weeks = [
+                { id: 1, title: "Week 1: What did I notice?", questions: ["Which inner voice was loudest this week?", "Was there a moment when you caught yourself in a pattern?", "Did anything surprise you?", "What did your body feel like when you were stressed? When you were calm?"] },
+                { id: 2, title: "Week 2: Body Tension & Calm", questions: ["Where did tension show up? (Jaw, shoulders, chest, stomach?)", "When did you feel most at ease?", "Did you notice your breath changing in certain situations?", "What helped your body soften?"] },
+                { id: 3, title: "Week 3: Loudest Voice", questions: ["What did that voice say most often?", "In what situations did it speak up?", "What was it trying to protect you from?", "Did you hear the Wise Self at all? What did it say?"] },
+                { id: 4, title: "Week 4: Tiny Shifts", questions: ["Did I catch myself in a pattern and choose differently (even once)?", "Did I notice my body responding to language?", "Did I give myself permission to rest or slow down?", "What am I proud of myself for this week?"] }
+            ];
+
+            const permissions = [
+                "You do not have to do this perfectly",
+                "You can do the same practice for multiple weeks",
+                "You can skip a week if you need to",
+                "You can listen quietly without sharing",
+                "You can modify the prompts to fit your needs",
+                "There is no 'falling behind' here"
+            ];
+
+            const goToMenu = () => {
+                setView('menu');
+                setSelectedWeek(null);
+                window.scrollTo(0,0);
+            };
+
+            return (
+                <div className="min-h-screen p-4 sm:p-8">
+                    <div className="max-w-3xl mx-auto container-box">
+                        
+                        {/* Header Branding */}
+                        <div className="text-center mb-8 no-print">
+                            <p className="text-[10px] font-bold tracking-[0.3em] uppercase text-emerald-600 mb-2">Healing with Yvonne</p>
+                            <h1 className="text-3xl sm:text-4xl font-extrabold text-emerald-950 mb-2 leading-tight">Module 4: Weekly Practices</h1>
+                            <p className="text-sm italic text-gray-400 font-medium">"Experience over theory. Week by week."</p>
+                        </div>
+
+                        <div className="bg-white rounded-[2.5rem] shadow-2xl p-8 sm:p-14 border border-emerald-50 min-h-[550px] flex flex-col fade-in">
+                            
+                            {/* MAIN MENU */}
+                            {view === 'menu' && (
+                                <div className="space-y-8">
+                                    <div className="text-center mb-10">
+                                        <h2 className="text-2xl font-bold text-emerald-900 mb-4 font-serif">Welcome to Integration</h2>
+                                        <p className="text-gray-600 leading-relaxed text-sm">
+                                            Knowledge alone does not create lasting change. Change is created through consistent, gentle, repeatable practice.
+                                            Choose a path for your practice today:
+                                        </p>
+                                    </div>
+
+                                    <div className="grid grid-cols-1 gap-4">
+                                        <button 
+                                            onClick={() => setView('practice')}
+                                            className="p-6 text-left border-2 border-emerald-50 bg-emerald-50/20 rounded-3xl hover:border-emerald-400 hover:bg-emerald-50 transition-all group"
+                                        >
+                                            <div className="flex justify-between items-center">
+                                                <div>
+                                                    <h3 className="font-bold text-emerald-900 text-lg">1. Guided Audio Practice</h3>
+                                                    <p className="text-xs text-gray-500 mt-1">Gently meet your inner voices with compassion (5-10 min).</p>
+                                                </div>
+                                                <div className="text-emerald-300 group-hover:text-emerald-600 transition-colors">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                                </div>
+                                            </div>
+                                        </button>
+
+                                        <button 
+                                            onClick={() => setView('reflection')}
+                                            className="p-6 text-left border-2 border-emerald-50 bg-emerald-50/20 rounded-3xl hover:border-emerald-400 hover:bg-emerald-50 transition-all group"
+                                        >
+                                            <div className="flex justify-between items-center">
+                                                <div>
+                                                    <h3 className="font-bold text-emerald-900 text-lg">2. Weekly Reflection Prompts</h3>
+                                                    <p className="text-xs text-gray-500 mt-1">Choose a prompt to notice what shifted during your week.</p>
+                                                </div>
+                                                <div className="text-emerald-300 group-hover:text-emerald-600 transition-colors">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+                                                </div>
+                                            </div>
+                                        </button>
+
+                                        <button 
+                                            onClick={() => setView('permissions')}
+                                            className="p-6 text-left border-2 border-emerald-50 bg-emerald-50/20 rounded-3xl hover:border-emerald-400 hover:bg-emerald-50 transition-all group"
+                                        >
+                                            <div className="flex justify-between items-center">
+                                                <div>
+                                                    <h3 className="font-bold text-emerald-900 text-lg">3. The Permission Deck</h3>
+                                                    <p className="text-xs text-gray-500 mt-1">Grounding statements for when you feel pressure to be perfect.</p>
+                                                </div>
+                                                <div className="text-emerald-300 group-hover:text-emerald-600 transition-colors">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
+                                                </div>
+                                            </div>
+                                        </button>
+                                    </div>
+                                    
+                                    <div className="bg-amber-50 border-l-4 border-amber-400 p-6 rounded-r-2xl mt-10">
+                                        <p className="text-xs text-amber-900 leading-relaxed font-medium">
+                                            <strong>Weekly Rhythm:</strong> Start your week with the audio practice, notice your patterns during the week, and end with a reflection prompt.
+                                        </p>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* SECTION 1: GUIDED PRACTICE */}
+                            {view === 'practice' && (
+                                <div className="space-y-6 flex flex-col flex-1">
+                                    <button onClick={goToMenu} className="text-sm font-bold text-gray-400 hover:text-emerald-700 flex items-center gap-1 mb-4"><svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg> Back to Menu</button>
+                                    <h2 className="text-2xl font-bold text-emerald-900">Meeting Your Inner Voices</h2>
+                                    
+                                    <div className="bg-emerald-900 text-white p-8 rounded-[2.5rem] shadow-xl space-y-6">
+                                        <div className="flex flex-col items-center text-center space-y-4">
+                                            <div className="w-16 h-16 bg-emerald-800 rounded-full flex items-center justify-center">
+                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m8 0h-3m4-8a3 3 0 01-3 3H9a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v4z" /></svg>
+                                            </div>
+                                            <h3 className="font-bold text-xl font-serif text-emerald-100">Unlocking the Voices Within</h3>
+                                            <p className="text-xs text-emerald-300 italic">A guided path to self-compassion</p>
+                                            
+                                            {/* AUDIO PLAYER - UPDATED FOR YOUR FILE */}
+                                            <audio controls className="w-full mt-4 bg-emerald-800 rounded-full">
+                                                <source src="ElevenLabs_Unlocking_the_Voices_Within_A_Path_to_Self-Compassion.mp3" type="audio/mpeg" />
+                                                Your browser does not support the audio element.
+                                            </audio>
+                                            <p className="text-[10px] text-emerald-400 italic">If the audio doesn't play, ensure the MP3 file is uploaded to your GitHub repository.</p>
+                                        </div>
+                                    </div>
+
+                                    <div className="p-8 bg-white border-2 border-emerald-50 rounded-[2.5rem] text-center space-y-6 fade-in">
+                                        <p className="text-[10px] font-bold text-emerald-600 uppercase tracking-widest">Core Affirmation</p>
+                                        <h4 className="text-2xl font-extrabold text-emerald-950 italic leading-tight">
+                                            "I am safe. I am here. I am enough."
+                                        </h4>
+                                        <p className="text-sm text-gray-500 italic leading-relaxed">
+                                            Read this aloud slowly. Take a breath. <br/> Let the truth of these words land in your body.
+                                        </p>
+                                    </div>
+
+                                    <div className="flex justify-center pt-8">
+                                        <button onClick={goToMenu} className="px-10 py-4 bg-emerald-950 text-white font-bold rounded-2xl hover:bg-emerald-800 shadow-xl transition-all">Done for Today</button>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* SECTION 2: WEEKLY REFLECTIONS */}
+                            {view === 'reflection' && (
+                                <div className="space-y-6 flex flex-col flex-1">
+                                    <button onClick={goToMenu} className="text-sm font-bold text-gray-400 hover:text-emerald-700 flex items-center gap-1 mb-4 no-print"><svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg> Back to Menu</button>
+                                    <h2 className="text-2xl font-bold text-emerald-900">Weekly Reflection Log</h2>
+                                    
+                                    {!selectedWeek ? (
+                                        <div className="grid grid-cols-1 gap-3">
+                                            <p className="text-sm text-gray-400 italic mb-2">Choose your reflection point:</p>
+                                            {weeks.map(w => (
+                                                <button 
+                                                    key={w.id} 
+                                                    onClick={() => setSelectedWeek(w)}
+                                                    className="p-5 text-left border border-gray-100 rounded-2xl hover:bg-emerald-50 hover:border-emerald-200 transition-all font-bold text-emerald-800"
+                                                >
+                                                    {w.title}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    ) : (
+                                        <div className="space-y-6 fade-in">
+                                            <div className="p-6 bg-emerald-50/50 rounded-3xl border border-emerald-100">
+                                                <h3 className="font-bold text-emerald-900 mb-4">{selectedWeek.title}</h3>
+                                                <ul className="space-y-2 mb-6">
+                                                    {selectedWeek.questions.map((q, i) => (
+                                                        <li key={i} className="text-xs text-emerald-700 flex gap-2">
+                                                            <span className="font-bold">•</span> {q}
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                                <textarea 
+                                                    className="w-full border-2 border-white bg-white p-6 rounded-2xl h-48 focus:border-emerald-300 outline-none transition-all text-sm shadow-inner"
+                                                    placeholder="Type your reflection here..."
+                                                    value={reflectionText}
+                                                    onChange={e => setReflectionText(e.target.value)}
+                                                />
+                                            </div>
+                                            <div className="flex gap-4">
+                                                <button onClick={() => setSelectedWeek(null)} className="px-6 py-4 text-emerald-800 font-bold border-2 border-emerald-100 rounded-2xl hover:bg-emerald-50 transition-all">Choose Other</button>
+                                                <button 
+                                                    onClick={() => setView('result')}
+                                                    disabled={!reflectionText}
+                                                    className="flex-1 bg-emerald-950 text-white font-bold py-5 rounded-2xl shadow-xl hover:bg-emerald-800 transition-all disabled:opacity-30"
+                                                >
+                                                    Save & Finalize
+                                                </button>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+
+                            {/* SECTION 3: PERMISSION DECK */}
+                            {view === 'permissions' && (
+                                <div className="space-y-6 flex flex-col flex-1">
+                                    <button onClick={goToMenu} className="text-sm font-bold text-gray-400 hover:text-emerald-700 flex items-center gap-1 mb-4 no-print"><svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg> Back to Menu</button>
+                                    <h2 className="text-2xl font-bold text-emerald-900">Permission Deck</h2>
+                                    <p className="text-gray-500 text-sm italic">Read these slowly when you feel like you are "failing" or "doing it wrong."</p>
+                                    
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                        {permissions.map((p, i) => (
+                                            <div key={i} className="p-6 bg-white border border-emerald-100 rounded-3xl shadow-sm hover:shadow-md transition-all flex items-center gap-4 group">
+                                                <div className="w-2 h-2 bg-emerald-400 rounded-full group-hover:scale-125 transition-transform"></div>
+                                                <p className="font-medium text-emerald-900 text-sm">{p}</p>
+                                            </div>
+                                        ))}
+                                    </div>
+
+                                    <div className="bg-emerald-950 text-white p-8 rounded-[2.5rem] mt-10 text-center space-y-4">
+                                        <p className="text-xs uppercase tracking-widest text-emerald-400 font-bold">The Goal</p>
+                                        <p className="text-sm leading-relaxed">
+                                            This is not about doing it right. This is about showing up for yourself, gently and consistently.
+                                        </p>
+                                        <button onClick={goToMenu} className="pt-4 text-xs font-bold underline decoration-emerald-500 underline-offset-4 hover:text-emerald-300 transition-colors">Return to Menu</button>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* RESULT SCREEN */}
+                            {view === 'result' && (
+                                <div className="text-center fade-in">
+                                    <div className="bg-emerald-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 text-emerald-600 font-bold text-2xl">✓</div>
+                                    <h2 className="text-3xl font-bold text-emerald-950 mb-4">Reflection Complete</h2>
+                                    <p className="text-gray-500 mb-10 leading-relaxed italic">"Trust the process. Awareness is enough."</p>
+                                    
+                                    <div className="text-left p-10 border-2 border-emerald-100 rounded-[2.5rem] mb-10 bg-white shadow-sm print-block">
+                                        <div className="border-b border-emerald-100 pb-6 mb-8 flex justify-between items-end">
+                                            <div>
+                                                <h3 className="font-bold uppercase tracking-[0.2em] text-[10px] text-emerald-800 mb-1">Healing with Yvonne</h3>
+                                                <h4 className="text-xl font-bold text-emerald-950">Weekly Practice Reflection</h4>
+                                            </div>
+                                            <p className="text-gray-400 text-[10px] uppercase font-bold tracking-widest">{new Date().toLocaleDateString()}</p>
+                                        </div>
+                                        
+                                        <div className="space-y-6 text-sm">
+                                            <div>
+                                                <p className="text-[10px] font-bold text-emerald-700 uppercase tracking-widest mb-1">Focused Reflection Point</p>
+                                                <p className="text-gray-800 font-bold">{selectedWeek?.title}</p>
+                                            </div>
+                                            <div className="p-8 bg-emerald-50/50 rounded-[2rem] border border-emerald-50">
+                                                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">My Insights</p>
+                                                <p className="text-gray-800 leading-relaxed whitespace-pre-wrap italic">"{reflectionText}"</p>
+                                            </div>
+                                        </div>
+                                        <p className="mt-14 italic text-emerald-600 text-[9px] text-center border-t border-emerald-50 pt-6">© 2025 Healing with Yvonne | "Gently and consistently."</p>
+                                    </div>
+
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 no-print pb-12">
+                                        <button onClick={() => window.print()} className="bg-emerald-950 text-white font-bold py-5 rounded-2xl flex items-center justify-center gap-2 shadow-xl hover:bg-emerald-900 transition-all">
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" /></svg>
+                                            Download Reflection PDF
+                                        </button>
+                                        <button onClick={goToMenu} className="border-2 border-emerald-200 text-emerald-800 font-bold py-5 rounded-2xl hover:bg-emerald-50 transition-all">
+                                            Back to Main Menu
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+
+                        </div>
+
+                        {/* Footer Branding */}
+                        <div className="mt-12 text-center no-print">
+                            <p className="text-gray-300 text-[10px] tracking-[0.4em] uppercase font-bold">&copy; 2025 Healing with Yvonne</p>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
